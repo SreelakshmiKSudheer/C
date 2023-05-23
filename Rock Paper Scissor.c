@@ -167,7 +167,10 @@ int main()
 					break;
 		
 		}
-		printf("Score: \nPlayer 1: %d\nPlayer 1: %d\n",p1,p2);
+		if(PF == 1)
+			printf("Score: \nPlayer 1: %d\nPlayer 2: %d\n",p1,p2);
+		else
+			printf("Score: \nPlayer 1: %d\nPlayer 2: %d\n",p2,p1);
 	}
 		
 	
