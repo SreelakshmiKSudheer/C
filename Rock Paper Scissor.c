@@ -4,6 +4,7 @@
 
 char str[20],Player_1[20],Player_2[20],Toss_1,Toss_2,choice_1,choice_2;
 int t,p1 = 0,p2 = 0,i,j,choice_valid;
+char ch;
 char* string()								// function to input string
 {
 	
@@ -13,7 +14,7 @@ char* string()								// function to input string
 
 char choice()						//r/p/s selection
 {
-	char ch;
+	
 	scanf("  %c",&ch);
 	char C[] = {'r','R','p','P','s','S'};
 	for(j = 0;j < 6; j++)
@@ -177,9 +178,9 @@ int main()
 		if(p1 == p2)								// Winner
 			printf("DRAW");			
 		else if(p1 > p2)
-			printf("Player 1 WIns");
+			printf("Player %d WIns",PF);
 		else
-			printf("Player 2 WIns");
+			printf("Player %d WIns",PS);
 		
 	}
 	
