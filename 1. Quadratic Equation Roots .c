@@ -11,23 +11,23 @@ int main()
 	if(d == 0)
 	{
 		printf("Roots are real and equal OR only one root");
-		root = (-b)/(2 * a);
+		root = (-b)/(2.0 * a);
 		printf("\nThe root is %f",root);
 		
 	}
 	else if(d > 0)
 	{
 		printf("Roots are real and distinct.");
-		root1 = (-b + sqrt(d))/(2 * a);
-		root2 = (-b - sqrt(d))/(2 * a);
+		root1 = (-b + sqrt(d))/(2.0 * a);
+		root2 = (-b - sqrt(d))/(2.0 * a);
 		printf("\nThe roots are %f and %f",root1,root2);
 		
 	}
 	else
 	{
 		printf("Roots are imaginary");
-		rp = (-b)/(2 * a);
-		ip = sqrt(-d)/(2 * a);
+		rp = (-b)/(2.0 * a);
+		ip = sqrt(-d)/(2.0 * a);
 		
 		printf("\nReal part= %f",rp);
 		printf("\nImaginary part= %f",ip);
