@@ -2,7 +2,7 @@
 
 int main()
 {
-	int a[20],b[20],u[40],inter[20],m,n,i,j,c=0,d=0,t=1;
+	int a[20],b[20],u[40],inter[20],m,n,i,j,i_n = 0,u_n = 0,common = 0, diff[20],d_n = 0;
 	
 	printf("How many elements in array A: ");
 	scanf("%d",&m);
@@ -22,38 +22,47 @@ int main()
 
 	for(i = 0 ; i < m ; i++)
 	{
-		t = 1;
+		common = 0;
 		for(j = 0 ; j < n ; j++)
 		{
 			if(a[i] == b[j])
 			{
-				inter[c] = a[i];
-				t = 0;
-				c++;
+				inter[i_n] = a[i];
+				common = 1;
+				i_n++;
 			}
 		}
-		if(t)
+		if(!common)
 		{
-			u[d] = a[i];
-			d++;
+			u[u_n] = a[i];
+			u_n++;
+			diff[d_n] = a[i];
+			d_n++;
 		}
+		
 	}
 	
 	printf("A intersection B = {");
-	for(i = 0; i < c ; i++)
+	for(i = 0; i < i_n ; i++)
 		printf("%d,",inter[i]);
 	printf("\b}\n");
 	
 	for(i = 0; i < n ; i++)
 	{
-		u[d] = b[i];
-		d++;
+		u[u_n] = b[i];
+		u_n++;
 		
 	}
+
+	
 	
 	printf("A union B = {");
-	for(i = 0; i < d ; i++)
+	for(i = 0; i < u_n ; i++)
 		printf("%d,",u[i]);
 	printf("\b}\n");
-	
+
+	printf("A - B = {");
+	for(i = 0; i < d_n ; i++)
+		printf("%d,",diff[i]);
+	printf("\b}\n");	
 }
