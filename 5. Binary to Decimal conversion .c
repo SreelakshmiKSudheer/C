@@ -7,7 +7,7 @@ int main()
 	
 	while (choice == 'y' || choice == 'Y')
 	{
-
+		multiplier = 1, dec_num = 0;
 		printf("Input a binary number: ");
 		scanf("%d",&bi_num);
 	
