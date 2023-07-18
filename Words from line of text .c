@@ -20,7 +20,7 @@ int main()
 			for(; text[i] != ' ' && text[i] != '\t' &&	text[i] != '\0'; i++)
 				word[j++] = text[i];
 			
-				word[j] = '\0';
+			word[j] = '\0';
 			printf("%s\n",word);
 		}
 		
