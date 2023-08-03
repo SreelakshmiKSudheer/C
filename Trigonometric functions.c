@@ -58,9 +58,9 @@ int main()
 	printf("Enter angle in degrees: ");
 	scanf("%f",&x);
 	
-	//if(sine(x) == sin(x))
-		printf("sin(x) = %f",sin(rad(x)));
-		
-	//if(cosine(x) == cos(x))
-		printf("cos(x) = %f",cosine(rad(x)));
+	printf("Using library function:\nsin%.2f = %f\n",x,sin(rad(x)));
+	printf("Using User defined function:\nsin%.2f = %f\n",x,sine(rad(x)));
+	
+	printf("Using library function:\ncos%.2f = %f\n",x,cos(rad(x)));
+	printf("Using User defined function:\ncos%.2f = %f\n",x,cosine(rad(x)));
 }
