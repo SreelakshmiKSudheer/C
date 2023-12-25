@@ -1,134 +1,134 @@
 #include <stdio.h>
 
-#define PRIORITIES 10
 #define SIZE 5
+#define INVALID -99999
 
-int pq[PRIORITIES][SIZE],f[PRIORITIES],r[PRIORITIES];
+int Q[SIZE],front,rear;
 
-void enqueue(int item,int prior)
+void insert_rear(int item)
 {
-	if(prior >= PRIORITIES || prior < 0)
-		printf("Given Priority out of range. Give priorities between the range 0 to %d\n",PRIORITIES - 1);
-	else
-	{
-		if(r[prior] ==  SIZE - 1)
-			printf("Priority overflow\n");
-        	else
-        	{
-                	if(f[prior] == -1)
-                        	f[prior] = 0;
-					r[prior] += 1;
-                	pq[prior][r[prior]] = item;
-        	}
+        if(front == (rear + 1) %  SIZE)
+                printf("Queue Full\n");
+        else
+        {
+                if(front == -1)
+                        front =  0;
+                rear = (rear + 1) % SIZE;
+                Q[rear] = item;
 	}
 }
 
-int isempty()
+int delete_front()
 {
-	int i,empty = 1;
-	for(i = 0; i < PRIORITIES;i++)
+        int item;
+        if(front == -1 && rear == -1)
+                return INVALID;
+        else
         {
-                if(f[i] != -1)
-                {        
-                       	empty = 0;
-						break;
-                }
+                item = Q[front];
+                front = (front + 1) % SIZE;
+                if (front == (rear + 1) % SIZE)
+                        front = rear = -1;
+                return item;
         }
 
-	return empty;
-
 }
 
-int dequeue()
+void insert_front(int item)
 {
-        int item,i;
-
-	if(!(isempty()))
+        if((rear == (front - 1) %  SIZE) || (front == 0 && rear == SIZE - 1))
+                printf("Queue Full\n");
+        else
         {
-		for(i = PRIORITIES - 1; i >= 0 ; i--)
-		{
-			if(f[i] != -1)
-			{
-	        		item = pq[i][f[i]];
-				f[i] += 1;
-                		if(f[i] == r[i] + 1)
-                        		f[i] = r[i] = -1;
-				printf("\nDeleted item is %d with priority %d\n",item,i);
-                		return item;
-			}
-        	}
-	}
-	else
-		printf("Q empty\n");
+                if((front == -1 || front == 0) && rear < SIZE)
+                        front = SIZE - 1;
+                else
+			front--;
+		Q[front] = item;
+        }
+        
 }
+
+int delete_rear()
+{
+	int item;
+        if(front == -1 && rear == -1)
+                return INVALID;
+        else
+        {
+		item = Q[rear--];
+                if(rear == -1)
+                        rear = SIZE - 1;
+                if(front == rear + 1)
+                         rear = -1;
+                return item;
+        }
+         
+}
+
+
+
 
 void display()
 {
-        int i,j;
+        int i;
 
-	printf("\n<-------------------------------------------------------->\n");
-
-	if(isempty())
-	{
-		printf("Q empty\n");
+        if(front == -1 && rear == -1)
+                printf("Queue is empty\n");
+        else
+        {
+               for(i = front; i != rear; i = (i + 1) % SIZE)
+                {
+                        printf("%d ",Q[i]);
+                }
+		printf("%d ",Q[i]);
 	}
-	else
-	{
-		for(i = PRIORITIES - 1; i >= 0 ; i--)
-        	{
-
-	        	if(f[i] == -1)
-        	        	printf("No elements with priority %d\n",i);
-        		else
-        		{
-				printf("\nElements with priority %d are\n",i);
-                		for(j = f[i]; j != r[i]; j++)
-                        		printf("%d\t",pq[i][j]);
-				printf("\t%d ",pq[i][j]);
-                		printf("\n");
-			}
-        	}
-
-		printf("\n<-------------------------------------------------------->\n");
-	}
+	printf("\n");
 }
 
 int main()
 {
-	int item,prior,i;
+	front = -1, rear = -1;
+	int item;
         char choice;
-
-	for(i =0; i < PRIORITIES; i++)
-	{
-		f[i] = -1;
-		r[i] = -1;
-	}
-
-        printf("Press\n1] To insert\n2] To delete\n3] To display\n4] To quit\n");
+        printf("Press\n1] To insert front\n2] To Insert rear\n3] To delete from front\n4] To delete fron rear\n5] To display\n6] To quit\n");
 
         do
         {
                 printf("Enter choice: ");
-                scanf(" %c",&choice);
+		scanf(" %c",&choice);
 
-                switch(choice)
+	        switch(choice)
                 {
-                        case '1': printf("Enter an element and its priority: ");
-                                scanf("%d%d",&item,&prior); 
-                                enqueue(item,prior);
+                        case '1': printf("Enter an element: ");
+                                scanf("%d",&item); 
+                                insert_front(item);
                                 break;
- 
-                        case '2' : item = dequeue();
+			case '2': printf("Enter an element: ");
+                                scanf("%d",&item); 
+                                insert_rear(item);
                                 break;
 
-                        case '3': display();
+                        case '3' : item = delete_front();
+				if(item == INVALID)
+					 printf("Queue Empty\n");
+				else
+                                	printf("Deleted item = %d\n",item);
                                 break;
-                        case '4':
+			case '4' : item = delete_rear();
+                                if(item == INVALID)
+                                         printf("Queue Empty\n");
+                                else
+                                        printf("Deleted item = %d\n",item);
+
+                                break;
+
+                        case '5': display();
+                                break;
+                        case '6':
                                 break;
                         default: printf("Invalid Choice\n");
                 }
-        }while(choice != '4');
-
+        }while(choice != '6');
 }
-
 
