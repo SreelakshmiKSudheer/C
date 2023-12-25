@@ -1,79 +1,91 @@
 #include <stdio.h>
 
-#define SIZE 3
+#define SIZE 5
 #define INVALID -9999
 
 int Q[SIZE],front,rear;
 
 void enqueue(int item)
 {
-    if(front == (rear + 1) % SIZE)
-        printf("Q full, Coulcn't insert item\n");
-    else
-    {
-        if(front == -1)
-            front = 0;
-        rear = (rear + 1) % SIZE;
-        Q[rear] = item;
-
-    }
+        if(front == (rear + 1) %  SIZE)
+                printf("Queue Full\n");
+        else
+	{
+		if(front == -1)
+			front  =  0;
+		rear = (rear + 1) % SIZE;
+	        Q[rear] = item;
+	}
 }
 
 int dequeue()
 {
-    if (front == -1)
-        return INVALID;
-    else
-    {
-        if(front == (rear + 1) % SIZE)
+        int item;
+        if(front == -1 && rear == -1)
+                return INVALID;
+        else
         {
-            front = -1;
-            rear = -1;
+                item = Q[front];
+		front = (front + 1) % SIZE;
+		if (front == (rear + 1) % SIZE)
+			front = rear = -1;
+                return item; 
         }
-        return Q[front--];
-    }
 }
 
 void display()
 {
-    if (front == -1)
-        printf("Q empty\n");
-    else
-    {
         int i;
-        
-        for(i = front; i <= rear; i++)
-            printf("%d ",Q[i]);
-        printf("\n");
-    }
+
+        if(front == -1 && rear == -1)
+                printf("Queue is empty\n");
+        else
+        {
+                i = front;
+		while(i != rear)
+		{
+			printf("%d ",Q[i]);
+			i = (i + 1) % SIZE;
+
+		}
+		printf("%d ",Q[rear]);
+                printf("\n");
+        }
 }
+
 int main()
 {
-    int choice,item;
-    front = -1, rear = -1;
-    printf("Press\n1] Insert\n2] Delete\n3] Display\n4] Quit\n");
+	front = rear = -1;
+        char choice;
+	int item;
+        printf("Press '+' to INSERT\n'-' to DELETE\n'd' to DISPLAY\n'q' to QUIT: ");
 
-    do
-    {
-        printf("Enter choice: ");
-        scanf("%d",&choice);
-
-        switch(choice)
+        do
         {
-            case 1: printf("Enter element: ");
-                    scanf("%d",&item);
-                    enqueue(item);
-                    break;
-            case 2: item = dequeue();
-                    if(item == INVALID)
-                        printf("Q empty\n");
-                    else    
-                        printf("Deleted item = %d\n",item);
-                    break;
-            case 3: display();
-                    break;
-            case 4: break;
-            default: printf("Invalid choice\n");
-        }
-    }while(choice != 4);
+                printf("Enter choice: ");
+                scanf(" %c",&choice);
+
+
+
+                switch(choice)
+                {
+                        case '+': printf("Enter an element: ");
+                                scanf("%d",&item); 
+                                enqueue(item);
+                                break;
+                        case '-' : item = dequeue();
+                         	   if(item == INVALID)
+					printf("Queue Empty\n");
+				   else
+				   	printf("Deleted item = %d\n",item);
+                                break;
+                        case 'd': display();
+                                break;
+                        case 'q':
+                                break;
+                        default: printf("Invalid Choice\n");
+                }
+        }while(choice != 'q');
 }
+
+
