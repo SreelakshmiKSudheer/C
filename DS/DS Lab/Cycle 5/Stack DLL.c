@@ -3,133 +3,131 @@
 
 #define INVALID -99999
 
+// Node structure representing a doubly linked list node
 typedef struct Node
 {
-    int data;
-    struct Node *llink;
-    struct Node *rlink;
-}Node;
+    int data;             // Data stored in the node
+    struct Node *llink;   // Pointer to the previous node (left link)
+    struct Node *rlink;   // Pointer to the next node (right link)
+} Node;
 
-Node *header;
+Node *header, *tail;      // Global pointers to the header and tail nodes
 
-Node* getNode(int value)
+// Function to push a new node onto the top of the stack
+// Parameters:
+// - header: Pointer to the header node
+// - top: Pointer to the top of the stack (pointer to pointer)
+// - data: Data to be pushed onto the stack
+void push(Node *header, Node **top, int data)
 {
-    Node *newNode = (Node*)malloc(sizeof(Node));
-    if(newNode != NULL)
-    {
-        newNode->data = value;
-        newNode->llink = NULL;
-        newNode->rlink = NULL;
-    }
+    Node *New = (Node *)malloc(sizeof(Node));
 
-    return newNode;
-}
-
-void insertFront(Node* header, int item)
-{
-    Node *New = getNode(item);
-
-    // check for availability of memory
-    if (New != NULL)
-    {
-        Node *ptr = header->rlink;
-
-        New->llink = header;
-        header->rlink = New;
-        New->rlink = ptr;
-
-        // Update the ll of the next node
-        if (ptr != NULL)
-            ptr->llink = New;
-    }
+    if (New == NULL)
+        printf("Memory Underflow\n");
     else
-        printf("Unable to allocate memory\n");
+    {
+        New->data = data;
+        New->rlink = *top;
+        New->llink = header;
+
+        // Update the links to insert the new node
+        (*top)->llink = New;
+        *top = New;
+        header->rlink = *top;
+    }
 }
 
-
-int deleteFront(Node *header)
+// Function to pop a node from the top of the stack
+// Parameters:
+// - header: Pointer to the header node
+// - top: Pointer to the top of the stack (pointer to pointer)
+// Returns:
+// - The data of the popped node, or INVALID if the stack is empty
+int pop(Node *header, Node **top)
 {
     int item;
 
-    // check whether list is empty or not
-    if(header->rlink == NULL)
-    {
+    if (*top == tail)
         return INVALID;
-    }
     else
     {
-        Node *ptr = header->rlink;
-        item = ptr->data;
+        // Get the data of the top node
+        item = (*top)->data;
 
-        header->rlink = ptr->rlink;
-        if(ptr->rlink != NULL)
-            (ptr->rlink)->llink = header;
+        // Update the links to remove the top node
+        Node *ptr = (*top)->rlink;
+        ptr->llink = header;
+        header->rlink = ptr;
 
-        free(ptr);
+        // Free the memory of the top node
+        free(*top);
+
+        // Update top to point to the next node
+        *top = ptr;
+
+        // Return the popped item
         return item;
     }
-
 }
-void display(Node *header)
+
+// Function to display the elements of the stack
+// Parameters:
+// - top: Pointer to the top of the stack
+// - tail: Pointer to the tail node
+void display(Node *top, Node *tail)
 {
-    Node *top = header->rlink;
-    Node *ptr = header->rlink;
+    Node *ptr = tail->llink;
 
-    if(top == NULL)
+    if (top == tail)
     {
-        printf("No element, cannot display\n");
-        return ;
-
+        // Stack is empty
+        printf("Stack empty\n");
+        return;
     }
 
-    printf("Displaying elements of the list\n");
-
-    while(ptr->rlink != NULL)
+    // Traverse and print the elements of the stack
+    while (ptr != top->llink)
     {
-        ptr = ptr->rlink;
-    }
-
-    while(ptr != top)
-    {
-        printf("%d ",ptr->data);
+        printf("%d ", ptr->data);
         ptr = ptr->llink;
     }
-    printf("%d\n",ptr->data);
-    
-
+    printf("\n");
 }
 
-void Free(Node *header)
+// Function to free the memory allocated for the nodes in the stack
+// Parameters:
+// - header: Pointer to the header node
+// - tail: Pointer to the tail node
+void Free(Node *header, Node *tail)
 {
-        Node *ptr = header;
-        Node *ptr1 = ptr;
+    Node *ptr = header;
+    Node *ptr1 = ptr;
 
-        while(ptr != NULL)
-        {
-            ptr1 = ptr->rlink;
-            free(ptr);
-            ptr = ptr1;
-        }
-    
+    // Traverse the nodes and free the memory
+    while (ptr != NULL)
+    {
+        ptr1 = ptr->rlink;
+        free(ptr);
+        ptr = ptr1;
+    }
 }
 
-void push(Node* header,  int item)
-{
-    insertFront(header,item);
-}
-
-int pop(Node* header)
-{
-    int item = deleteFront(header);
-    return item;
-}
-
+// Main function
 int main()
 {
-    int choice,item;
-    header = getNode(-99999);
-    Node* top = header->rlink;
+    int choice, item;
 
+    // Allocate memory for the header and tail nodes
+    header = (Node *)malloc(sizeof(Node));
+    tail = (Node *)malloc(sizeof(Node));
+    header->llink = NULL;
+    header->rlink = tail;
+    tail->llink = header;
+    tail->rlink = NULL;
+
+    Node *top = header->rlink;
+
+    // Menu-driven loop
     printf("Enter \n1] Push");
     printf("\n2] Pop");
     printf("\n3] Display");
@@ -137,26 +135,35 @@ int main()
 
     do
     {
-        printf("Enter Choice: ");
-        scanf("%d",&choice);
+        printf("\nEnter Choice: ");
+        scanf("%d", &choice);
 
-        switch(choice)
+        switch (choice)
         {
-            case 1: printf("Enter item: ");
-                    scanf("%d",&item);
-                    push(header,item);
-                    break;
-            case 2: item = pop(header);
-                    printf("Deleted item: %d\n",item);
-                    break;
-            case 3: display(header);
-                    break;
-            case 4: break;
-
-            default: printf("Invalid Input\n");
+        case 1:
+            printf("Enter item: ");
+            scanf("%d", &item);
+            push(header, &top, item);
+            break;
+        case 2:
+            item = pop(header, &top);
+            if (item == INVALID)
+                printf("Empty\n");
+            else
+                printf("Deleted item: %d\n", item);
+            break;
+        case 3:
+            display(top, tail);
+            break;
+        case 4:
+            break;
+        default:
+            printf("Invalid Input\n");
         }
     } while (choice != 4);
 
-    Free(header);
-    
+    // Free the memory allocated for the nodes
+    Free(header, tail);
+
+    return 0;
 }
