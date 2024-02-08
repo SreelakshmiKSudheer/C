@@ -33,6 +33,7 @@ This course focuses on providing hands-on experience in implementing various dat
 8. Simulation of memory allocation strategies such as first-fit, best-fit, and worst-fit, along with basic memory allocation and garbage collection using doubly linked lists.
 
 ## Repository Structure
+ ```
  Cycle 1 
    Merge.c
    Largest Substring.c
@@ -47,3 +48,4 @@ This course focuses on providing hands-on experience in implementing various dat
  Cycle 3
    Infix to Postfix Single Digit.c
    
+```
