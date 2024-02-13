@@ -40,7 +40,7 @@ void insert_front(int item)
                 printf("Queue Full\n");
         else
         {
-                if((front == -1 || front == 0) && rear < SIZE)
+                if((front == -1 || front == 0) && rear < SIZE-1)
                         front = SIZE - 1;
                 else
 			front--;
