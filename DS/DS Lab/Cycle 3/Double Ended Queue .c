@@ -60,7 +60,10 @@ int delete_rear()
                 if(rear == -1)
                         rear = SIZE - 1;
                 if(front == rear + 1)
+		{
+			 front = -1;
                          rear = -1;
+		}
                 return item;
         }
          
