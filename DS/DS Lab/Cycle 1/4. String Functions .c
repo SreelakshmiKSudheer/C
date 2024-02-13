@@ -33,16 +33,29 @@ void Strcpy(char *s1,char *s2)
 
 int Strcmp(char s1[],char s2[])
 {
-    int i;
+    int I, value = 0;
 
     for(i = 0; (*s1 != '\0' && *s2 != '\0'); i++)
     {
-        if(s1[i] == s2[i])
-            return 0;
+        if(s1[i] < s2[i])
+        {
+            value = -1;
+            return -1;
+        }
         else if(s1[i] > s2[i])
+        {
+            value =  1;
             return 1;
-        return -1;
+        }
     }
+    if(*s1 == '\0')
+      value = -1;
+    else if(*s2 == '\0')
+      value = 1;
+    return value;
+    
+  
+    
 }
 
 char tolower(char c)
