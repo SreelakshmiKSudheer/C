@@ -144,10 +144,17 @@ int deleteArbitary(Node *header,int pos)
             ptr = ptr->link;
         }
         
-        item = ptr->data;
-        ptr1->link = ptr->link;
-        free(ptr);
-        return item;
+        if(ptr->data == pos)
+        {
+            item = ptr->data;
+            ptr1->link = ptr->link;
+            free(ptr);
+            return item;
+        }
+        else
+        {
+            return INVALID;
+        }
     }
     else
     {
