@@ -35,8 +35,12 @@ void display_poly(Poly *p,int n)
 	int i = 0;
 
 	for(i = 0; i < n; i++)
-		printf("%.2fx%d + ",p[i].coeff,p[i].exp);
-	printf("\b\b\n");
+	{
+		printf("%.2fx^%d ",p[i].coeff,p[i].exp);
+		if(I < n-1)
+			printf(" + ");
+	}
+	printf("\n");
 
 }
 
